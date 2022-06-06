@@ -1,7 +1,7 @@
 // bst.cpp
 // CS24 Final Exam
 // Implements class bst
-// YOUR NAME(S), DATE
+// Tony Tran, 6/6/22
 
 #include "bst.h"
 
@@ -11,13 +11,26 @@ using std::cout;
 
 
 bst::bst(vector<int>&v){
+    root = nullptr;
+    for (int i= 0 ; i < v.size(); ++i){
+        insert(v[i]);
+
+
+    }
 
 }
 
 bst::~bst(){
+    clear(root);
+
 
 }
-
+void bst::clear(bstNode *n){
+    if(!n) return;
+    clear(n->left);
+    clear(n->right);
+    delete n;
+}
 
 
 bool bst::insert(int value) {
@@ -65,10 +78,29 @@ void bst::deleteSubtree(int key){
 
 }
 int bst::countLeaves(bstNode *n) const{
-    return 0;
+    if (!n) return 0;
+    if (!n->left && !n->right){
+        return 1;
+    }
+    else{
+        return countLeaves(n->left) + countLeaves(n->right);
+    }
+    
 }
 int bst::countParentsWithTwoChildren(bstNode *n) const{
-    return 0;
+    int counter = 0;
+    if (!n) return 0;
+    if (n->left && n->right){
+        ++counter;
+        countParentsWithTwoChildren(n->left);
+        countParentsWithTwoChildren(n->right);
+
+    }
+    else{
+        countParentsWithTwoChildren(n->left);
+        countParentsWithTwoChildren(n->right);
+    }
+    return counter;
 }
 int bst::height(bstNode *n) const{
     return 0;
