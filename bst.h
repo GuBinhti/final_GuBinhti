@@ -34,6 +34,7 @@ class bst {
     //deleteSubtree Deletes the subtree in the BST that is rooted at the given key value
     void deleteSubtree(int key); 
     
+    
  private:
 
     struct bstNode {
@@ -69,6 +70,8 @@ class bst {
    
     //Add any new helper methods here
     void clear(bstNode *n);
+    bstNode* getSuccessorNode(int value) const;
+    
 };
 
 #endif

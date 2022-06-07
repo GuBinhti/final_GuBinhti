@@ -47,6 +47,28 @@ bool bst::insert(int value) {
 }
 
 
+bst::bstNode* bst::getSuccessorNode(int value) const{
+    bstNode* starter = getNodeFor(value, root);
+    if(!starter) return NULL;
+    if(starter->right) { //starter has a right subtree
+        bstNode *n = starter->right;
+        while(n->left) n = n->left;
+        return n;
+    } else { // no right subtree so go up by parents till a node is a left node
+        bstNode *parent = starter->parent;
+        if(!starter->parent) return NULL;
+        while(parent && starter == parent->right){ //till starter becomes a left node at which point p is successor
+            starter = parent;
+            parent = parent->parent;
+        }
+        return parent;
+    }
+}
+
+
+
+// returns the successor value of the given value or 0 if there is none
+
 // recursive helper for insert (assumes n is never 0)
 
 bool bst::insert(int value, bstNode *n) {
@@ -75,6 +97,13 @@ bool bst::insert(int value, bstNode *n) {
 
 
 void bst::deleteSubtree(int key){
+    if(!getNodeFor(key,root)) return;
+    bstNode *node = getNodeFor(key,root);
+    clear(node);
+    insert(key);
+
+    
+
 
 }
 int bst::countLeaves(bstNode *n) const{
@@ -90,25 +119,47 @@ int bst::countLeaves(bstNode *n) const{
 int bst::countParentsWithTwoChildren(bstNode *n) const{
     int counter = 0;
     if (!n) return 0;
-    if (n->left && n->right){
-        ++counter;
-        countParentsWithTwoChildren(n->left);
-        countParentsWithTwoChildren(n->right);
-
-    }
+    else if(n->left && n->right){
+        return countParentsWithTwoChildren(n->left)+countParentsWithTwoChildren(n->right)+1;
+    }   
     else{
-        countParentsWithTwoChildren(n->left);
-        countParentsWithTwoChildren(n->right);
+        return countParentsWithTwoChildren(n->left)+countParentsWithTwoChildren(n->right);
     }
-    return counter;
 }
+
 int bst::height(bstNode *n) const{
+    if(!n) return -1;
+    else{
+        int leftHeight = height(n->left);
+        int rightHeight = height(n->right);
+
+        if(leftHeight > rightHeight){
+            return leftHeight + 1;
+
+        }
+        else{
+            return rightHeight + 1;
+        }
+    }
+
     return 0;
 }
 void bst::outputPreOrder(bstNode *n, vector<int>& output) const{
+    if(n){
+        cout << n->info << " ";
+        outputPreOrder(n->left,output);
+        outputPreOrder(n->right,output);
+    }
+
     return;
 }
 void bst::outputInOrder(bstNode *n, vector<int>& output) const{
+    if (n){
+        outputInOrder(n->left, output);
+        cout << n->info << " ";
+        outputInOrder(n->right, output);
+    }
+
    return;
 }
 

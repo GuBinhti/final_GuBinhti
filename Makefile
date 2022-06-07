@@ -1,11 +1,6 @@
-all: test testbench
-	./test
-	./testbench
+all: testbst
 
-test:bst.cpp testbst.cpp
-	g++ -std=c++11 -g bst.cpp testbst.cpp -o test
-
-testbench:bst.cpp testbst.cpp
+testbst:bst.cpp testbst.cpp
 	g++ -std=c++11 -g bst.cpp testbst.cpp -o test
 	
 clean:
